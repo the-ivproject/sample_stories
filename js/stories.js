@@ -120,7 +120,7 @@ function getGPSbyStoryID(story_id) {
         let main_input = document.querySelectorAll('.groupinput').checked = true
 
         // document.getElementById(`collapse_${story_id}`).classList.add("show");
-        document.getElementById(`genInput${story_id}`).checked = true
+        document.getElementById(`genInput${story_id}`).checked = false
     });
     /*[{
             lat: 25.0682519,
@@ -159,6 +159,10 @@ function ZoomByStoryID(story_id) {
 
         }
         ZoomToGroup(gps_locations)
+        let cLandmark = document.querySelectorAll('.checkboxLandmark input')
+        cLandmark.forEach(i => {
+            i.checked = true
+        })
         // getGPSbyStoryID(story_id)
       
     });
@@ -440,17 +444,17 @@ mymap = L.map('map', {
     //     }
     // }
     genInput.addEventListener('click', function () {
-        if (genInput.checked === false) {
-            markers.eachLayer(function (layer) {
-                layer.remove()
-            })
-            mymap.removeLayer(markers);
-        } else {
-            console.log('markerIcon',markerIcon.length)
+        if (genInput.checked === true) {
             mymap.eachLayer(function (layer) {
                 mymap.addLayer(layer)
             })
             mymap.addLayer(markers);
+           
+        } else {
+            markers.eachLayer(function (layer) {
+                layer.remove()
+            })
+            mymap.removeLayer(markers);
         }
     })
 
@@ -489,7 +493,8 @@ mymap = L.map('map', {
 
     // toDel.forEach(n => markers.removeLayer(n));
 
-    mymap.addLayer(markers);
+    mymap.removeLayer(markers);
+
     //setTimeout(function(){
     // markers.zoomToBounds({padding: [20, 20]});
     //mymap.rem
