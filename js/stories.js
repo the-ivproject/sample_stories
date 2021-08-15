@@ -19,8 +19,11 @@ $(document).ready(
             for (i in data_json.table) {
                 addmyappList(gpsstory_list_all, data_json.table[i], 'prepend')
             }
-        
-           
+            let inpt = document.querySelectorAll('.groupinput')
+            for(let i = 0; i < inpt.length; i++)  {
+                let id = inpt[i].id.replace('genInput','')
+                getGPSbyStoryID(id)
+            }
         })
     });
 
@@ -116,7 +119,7 @@ function getGPSbyStoryID(story_id) {
         }
         let main_input = document.querySelectorAll('.groupinput').checked = true
 
-        document.getElementById(`collapse_${story_id}`).classList.add("show");
+        // document.getElementById(`collapse_${story_id}`).classList.add("show");
         document.getElementById(`genInput${story_id}`).checked = true
     });
     /*[{
@@ -156,7 +159,7 @@ function ZoomByStoryID(story_id) {
 
         }
         ZoomToGroup(gps_locations)
-        getGPSbyStoryID(story_id)
+        // getGPSbyStoryID(story_id)
       
     });
     /*[{
@@ -204,7 +207,7 @@ function addmyappList(div_id_to_add, data_to_append, where_to_add, id_div) {
     html_reg += '     <h2 class=\"accordion-header\" id=\"heading_' + myapp_story_id + '\" style="padding:10px;font-size:16px">';
     html_reg += '       <button style="width:50px;float:right;height:100%;padding:0;background:white;box-shadow:none" class=\"accordion-button\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#collapse_' + myapp_story_id + '\" aria-expanded=\"true\" aria-controls=\"collapse_' + myapp_story_id + '\">';
     html_reg += '       </button>';
-    html_reg += '           <input onclick=\"javascript:getGPSbyStoryID(' + myapp_story_id + ')\" id=\"genInput' + myapp_story_id + '\" class="groupinput" type=\"checkbox\"> (type:' + myapp_types + ') <a style="color:#0d6efd;text-decoration:underline;cursor:pointer" onclick=\"javascript:ZoomByStoryID(' + myapp_story_id + ')\">' + myapp_title + '</a> <a href=\"javascript:spec_func(' + myapp_story_id + ')\">(add)</a>';
+    html_reg += '           <input id=\"genInput' + myapp_story_id + '\" class="groupinput" type=\"checkbox\"> (type:' + myapp_types + ') <a style="color:#0d6efd;text-decoration:underline;cursor:pointer" onclick=\"javascript:ZoomByStoryID(' + myapp_story_id + ')\">' + myapp_title + '</a> <a href=\"javascript:spec_func(' + myapp_story_id + ')\">(add)</a>';
     html_reg += '     </h2>';
     html_reg += '     <div id=\"collapse_' + myapp_story_id + '\" class=\"accordion-collapse collapse\" aria-labelledby=\"heading_' + myapp_story_id + '\" data-bs-parent=\"#accordionExample\">';
     html_reg += '       <div class=\"accordion-body\">';
@@ -427,7 +430,15 @@ mymap = L.map('map', {
         });
 
     let genInput = document.getElementById(`genInput${sid}`)
+    let markerIcon = document.querySelectorAll('.leaflet-marker-icon')
+    let markerShadow = document.querySelectorAll('.leaflet-marker-shadow')
 
+    // if (gps_locations.length != markerIcon.length) {
+    //     for (let i = 0; i < (markerShadow.length - gps_locations.length); i++) {
+    //         markerIcon[i].remove()
+    //         markerShadow[i].remove()
+    //     }
+    // }
     genInput.addEventListener('click', function () {
         if (genInput.checked === false) {
             markers.eachLayer(function (layer) {
@@ -435,6 +446,7 @@ mymap = L.map('map', {
             })
             mymap.removeLayer(markers);
         } else {
+            console.log('markerIcon',markerIcon.length)
             mymap.eachLayer(function (layer) {
                 mymap.addLayer(layer)
             })
